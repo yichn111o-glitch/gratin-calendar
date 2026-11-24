@@ -7,6 +7,10 @@
 <title>グラタンカレンダー</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="グラタンカレンダー">
 </head>
 <body>
 <main>
@@ -14,6 +18,7 @@
   <div><h1>グラタンカレンダー</h1><p>グラタンを食べた日を記録しましょう</p></div>
   <button id="settings" class="light">スタンプ画像</button>
 </header>
+<div class="calendar-layout">
 <section class="card" aria-labelledby="month">
   <div class="toolbar">
     <h2 id="month" aria-live="polite"></h2>
@@ -24,6 +29,19 @@
   <div class="summary"><span>スタンプ <strong id="count">0</strong> 日</span><span>記録はこのブラウザに保存されます</span></div>
   <p id="calendarStatus" class="error" role="status"></p>
 </section>
+<aside class="card fiscal-card" aria-labelledby="fiscalTitle">
+  <h2 id="fiscalTitle">年度の合計</h2>
+  <div aria-live="polite" aria-atomic="true">
+    <p id="fiscalPeriod" class="fiscal-period"></p>
+    <p class="fiscal-total"><strong id="fiscalTotal">0</strong> 皿</p>
+    <dl class="fiscal-breakdown">
+      <div><dt>えびグラタン</dt><dd><span id="fiscalShrimp">0</span> 皿</dd></div>
+      <div><dt>ポテトグラタン</dt><dd><span id="fiscalPotato">0</span> 皿</dd></div>
+      <div id="fiscalLegacyRow" hidden><dt>種類未選択</dt><dd><span id="fiscalLegacy">0</span> 皿</dd></div>
+    </dl>
+  </div>
+</aside>
+</div>
 </main>
 
 <dialog id="detail" aria-labelledby="dateTitle">

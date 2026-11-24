@@ -108,6 +108,7 @@ function renderCalendar() {
     if (key === focusKey) button.focus();
   }
   $('count').textContent = count;
+  renderFiscalTotals(year, index);
 }
 
 function openDay(date) {
@@ -160,6 +161,35 @@ function lockDay(lock) {
 
 function plateCount(record, field, legacyMeal) {
   return Object.hasOwn(record, field) ? record[field] : record.meal === legacyMeal ? record.plates : null;
+}
+
+function fiscalTotals(records, year) {
+  let shrimp = 0;
+  let potato = 0;
+  let legacy = 0;
+  for (const [key, record] of records) {
+    const [recordYear, recordMonth] = key.split('-').map(Number);
+    if (recordYear - (recordMonth < 4 ? 1 : 0) !== year) continue;
+    const shrimpCount = plateCount(record, 'shrimpPlates', 'えびグラタン');
+    const potatoCount = plateCount(record, 'potatoPlates', 'ポテトグラタン');
+    shrimp += shrimpCount ?? 0;
+    potato += potatoCount ?? 0;
+    if (shrimpCount == null && potatoCount == null && !['えびグラタン', 'ポテトグラタン'].includes(record.meal)) {
+      legacy += record.plates ?? 0;
+    }
+  }
+  return {shrimp, potato, legacy, total:shrimp + potato + legacy};
+}
+
+function renderFiscalTotals(year, monthIndex) {
+  const fiscalYear = year - (monthIndex < 3 ? 1 : 0);
+  const totals = fiscalTotals(days, fiscalYear);
+  $('fiscalPeriod').textContent = fiscalYear + '年4月1日〜' + (fiscalYear + 1) + '年3月31日';
+  $('fiscalTotal').textContent = totals.total.toLocaleString('ja-JP');
+  $('fiscalShrimp').textContent = totals.shrimp.toLocaleString('ja-JP');
+  $('fiscalPotato').textContent = totals.potato.toLocaleString('ja-JP');
+  $('fiscalLegacy').textContent = totals.legacy.toLocaleString('ja-JP');
+  $('fiscalLegacyRow').hidden = totals.legacy === 0;
 }
 
 function validPlateCounts() {

@@ -1,7 +1,7 @@
 *{box-sizing:border-box}
 :root{color-scheme:light;--ink:#522909;--muted:#755136;--line:#e8cbb2;--accent:#a23a14}
 body{margin:0;background:#fff3e7;color:var(--ink);font:16px/1.5 system-ui,sans-serif}
-main{max-width:900px;margin:auto;padding:clamp(12px,4vw,40px)}
+main{max-width:1170px;margin:auto;padding:clamp(12px,4vw,40px)}
 header{background:#8e350f;color:#fff;border-radius:24px;padding:clamp(18px,4vw,32px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h1,h2,p{margin:0}
 h1{font-size:clamp(1.45rem,4vw,2.15rem)}
@@ -70,3 +70,13 @@ textarea{display:block;width:100%;resize:vertical;font:inherit;padding:8px;borde
 @keyframes stamp-drop{0%{transform:translateY(-100dvh) scale(1.45)}52%{transform:translateY(2vh) scale(.92,1.06)}68%{transform:translateY(-2vh) scale(1.06,.96)}84%,100%{transform:none}}
 @media(prefers-reduced-motion:reduce){#impact.stamped #impactArt{animation:none}}
 [hidden]{display:none!important}
+
+.calendar-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(215px,245px);gap:16px;align-items:start}
+.fiscal-card{background:#fff9f0}
+.fiscal-period{margin-top:4px;font-size:.875rem;color:var(--muted)}
+.fiscal-total{margin-top:8px;color:var(--accent)}
+.fiscal-total strong{font-size:2.5rem;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.fiscal-breakdown{margin:12px 0 0;font-size:.875rem}
+.fiscal-breakdown div{border-top:1px solid var(--line);padding:6px 0;display:flex;gap:6px;justify-content:space-between}
+.fiscal-breakdown dd{margin:0;text-align:right}
+@media(max-width:740px){.calendar-layout{grid-template-columns:minmax(0,1fr);gap:0}}
