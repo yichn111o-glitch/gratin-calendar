@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#8e350f">
+<title>グラタンカレンダー</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<main>
+<header>
+  <div><h1>グラタンカレンダー</h1><p>グラタンを食べた日を記録しましょう</p></div>
+  <button id="settings" class="light">スタンプ画像</button>
+</header>
+<section class="card" aria-labelledby="month">
+  <div class="toolbar">
+    <h2 id="month" aria-live="polite"></h2>
+    <div class="controls"><button id="prev">前月</button><button id="home">今月</button><button id="next">翌月</button></div>
+  </div>
+  <div class="grid weekdays" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+  <div class="grid" id="grid"></div>
+  <div class="summary"><span>スタンプ <strong id="count">0</strong> 日</span><span>記録はこのブラウザに保存されます</span></div>
+  <p id="calendarStatus" class="error" role="status"></p>
+</section>
+</main>
+
+<dialog id="detail" aria-labelledby="dateTitle">
+  <div class="dialog-head"><h2 id="dateTitle"></h2><button class="close">閉じる</button></div>
+  <div class="stamp-panel">
+    <div id="stampPreview"></div>
+    <div><button id="stamp" class="primary">スタンプを押す</button><button id="removeStamp" class="text" hidden>取り消す</button></div>
+  </div>
+  <fieldset>
+    <legend>食べた皿数</legend>
+    <div class="portion">
+      <label for="shrimpPlates">えびグラタン</label>
+      <div><input id="shrimpPlates" type="number" min="0" step="1" inputmode="numeric"><span>皿</span></div>
+    </div>
+    <div class="portion">
+      <label for="potatoPlates">ポテトグラタン</label>
+      <div><input id="potatoPlates" type="number" min="0" step="1" inputmode="numeric"><span>皿</span></div>
+    </div>
+    <p id="legacyPlates" hidden></p>
+  </fieldset>
+  <label class="memo-label" for="memo">メモ</label>
+  <textarea id="memo" rows="3" placeholder="その日のメモを入力"></textarea>
+  <div class="photos-head"><strong>添付画像 <span id="photoCount">0 / 5</span></strong><label id="attachLabel" class="upload">画像を追加<input id="photos" type="file" accept="image/*" multiple></label></div>
+  <div id="photoList" class="photo-list"></div>
+  <p id="detailStatus" class="feedback" role="status"></p>
+  <div class="dialog-foot"><button id="save" class="primary">記録を保存</button></div>
+</dialog>
+
+<dialog id="imageSettings" aria-labelledby="settingsTitle">
+  <div class="dialog-head"><h2 id="settingsTitle">スタンプ画像</h2><button class="close">閉じる</button></div>
+  <p>設定した画像は、これから押すスタンプに使われます。</p>
+  <div id="customPreview" class="custom-preview"></div>
+  <div class="controls"><label class="upload">画像を選ぶ<input type="file" id="customFile" accept="image/*"></label><button id="resetImage">標準に戻す</button></div>
+  <p id="settingsStatus" class="feedback" role="status"></p>
+</dialog>
+
+<dialog id="impact" aria-label="押印画面">
+  <button id="pressSurface" type="button" autofocus aria-label="この画面を押してスタンプを記録"></button>
+  <div id="impactArt" aria-hidden="true"></div>
+</dialog>
+</body>
+</html>
