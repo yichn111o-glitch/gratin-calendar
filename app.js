@@ -196,16 +196,26 @@ function validPlateCounts() {
   return shrimpPlates.reportValidity() && potatoPlates.reportValidity();
 }
 
-async function saveDay(changes = {}) {
-  if (busy || !validPlateCounts()) return false;
+async function saveDay(changes = {}, {resetPlates = false} = {}) {
+  if (busy || (!resetPlates && !validPlateCounts())) return false;
   const record = {...draft, ...changes, memo:$('memo').value,
-    shrimpPlates:shrimpPlates.value === '' ? null : shrimpPlates.valueAsNumber,
-    potatoPlates:potatoPlates.value === '' ? null : potatoPlates.valueAsNumber};
+    shrimpPlates:resetPlates ? 0 : (shrimpPlates.value === '' ? null : shrimpPlates.valueAsNumber),
+    potatoPlates:resetPlates ? 0 : (potatoPlates.value === '' ? null : potatoPlates.valueAsNumber)};
+  if (resetPlates) {
+    delete record.plates;
+    delete record.meal;
+  }
   lockDay(true);
   try {
     await access('days','readwrite', store => store.put({...record, dateKey:selectedKey}, selectedKey));
     draft = record;
     days.set(selectedKey, record);
+    if (resetPlates) {
+      shrimpPlates.value = '0';
+      potatoPlates.value = '0';
+      $('legacyPlates').hidden = true;
+      $('legacyPlates').textContent = '';
+    }
     dirty = false;
     renderCalendar();
     $('detailStatus').textContent = '保存しました。';
@@ -264,7 +274,15 @@ impact.onclose = () => {
   impactPhase = 'ready';
   $('stamp').focus();
 };
-$('removeStamp').onclick = () => saveDay({stamped:false, stampImage:null});
+$('removeStamp').onclick = async () => {
+  const isToday = selectedKey === keyOf(new Date());
+  if (await saveDay({stamped:false, stampImage:null}, {resetPlates:true})) {
+    $('stamp').focus();
+    const message = isToday ? '今日のグラタンの数をリセットしました。' : 'この日のグラタンの数をリセットしました。';
+    $('detailStatus').textContent = message;
+    alert(message);
+  }
+};
 $('save').onclick = async () => {
   if (await saveDay()) detail.close();
 };
